@@ -47,23 +47,25 @@ require([
     content: [
       {
         type: "text",
-        text: "{Description}"
+        text: "{Description}",
       },
       {
         type: "media",
-        mediaInfos: [{
-          type: "image",
-          value: {
-            sourceURL: "ewok.jpeg"
+        mediaInfos: [
+          {
+            type: "image",
+            value: {
+              sourceURL: "ewok.jpeg",
+            },
+            caption: "<i>A stud of an Ewok</i>",
           },
-          caption: "<i>A stud of an Ewok</i>"
-        }]
+        ],
       },
       {
         type: "text",
-        text: "<a href='https://starwars.fandom.com/wiki/Ewok'>Learn more about Ewoks here</a>"
-      }
-    ]
+        text: "<a href='https://starwars.fandom.com/wiki/Ewok'>Learn more about Ewoks here</a>",
+      },
+    ],
   };
   const attributes = {
     Name: "Home of the Ewoks",
@@ -106,32 +108,65 @@ require([
 
   const popupAirportsusa = {
     title: "Airports",
-    content: "<b>Name:</b> {Fac_Name}<br><b>City:</b> {City}<br><b>State:</b> {State_Name}"
-  }
+    content:
+      "<b>Name:</b> {Fac_Name}<br><b>City:</b> {City}<br><b>State:</b> {State_Name}",
+  };
+
+  const airportLabels = {
+    symbol: {
+      type: "text",
+      color: "#FFFFFF",
+      haloColor: "#5E8D74",
+      haloSize: "2px",
+      font: {
+        size: "12px",
+        family: "Noto Sans",
+        style: "italic",
+        weight: "normal"
+      }
+    },
+    labelPlacement: "above-center",
+    labelExpressionInfo: {
+      expression: "$feature.Fac_Name"
+    }
+  };
+
+  const airportRenderer = {
+    type: "simple",
+    symbol: {
+      type: "picture-marker",
+      url: "outline_local_airport_black_24dp.png",
+      width: "18px",
+      height: "18px",
+      opacity: 0.3,
+    },
+  };
 
   const airportsusaLayer = new FeatureLayer({
     url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports_JS_STACK_READ/FeatureServer",
-    outFields: ["Fac_Name","City","State_Name"],
-    popupTemplate: popupAirportsusa
-  }); 
+    outFields: ["Fac_Name", "City", "State_Name"],
+    popupTemplate: popupAirportsusa,
+    renderer: airportRenderer,
+    definionExpression: "Fac_Type = 'AIRPORT'",
+    labelingInfo: [airportLabels]
+  });
   map.add(airportsusaLayer);
 
   const popupEduusa = {
-    "title": "EDUs",
-    "content": "<b>Name:</b> {INSTNM}<br><b>Total Enrollment:</b> {INSTSIZE}<br><b>City:</b> {CITY}<br><b>State:</b> {STABBR}"
-  }
-  
+    title: "EDUs",
+    content:
+      "<b>Name:</b> {INSTNM}<br><b>Total Enrollment:</b> {INSTSIZE}<br><b>City:</b> {CITY}<br><b>State:</b> {STABBR}",
+  };
+
   //adding the Const for the feature layer
   const usaeduLayer = new FeatureLayer({
-  url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
-  
-  //adding the popup here
-  outFields: ["NAME","TOT_ENROLL"],
-  popupTemplate: popupEduusa
-   });
-  
+    url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
+
+    //adding the popup here
+    outFields: ["NAME", "TOT_ENROLL"],
+    popupTemplate: popupEduusa,
+  });
+
   //adding the feature layer to the map
   map.add(usaeduLayer);
 });
-
-
