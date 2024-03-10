@@ -122,13 +122,13 @@ require([
         size: "12px",
         family: "Noto Sans",
         style: "italic",
-        weight: "normal"
-      }
+        weight: "normal",
+      },
     },
     labelPlacement: "above-center",
     labelExpressionInfo: {
-      expression: "$feature.Fac_Name"
-    }
+      expression: "$feature.Fac_Name",
+    },
   };
 
   const airportRenderer = {
@@ -147,10 +147,31 @@ require([
     outFields: ["Fac_Name", "City", "State_Name"],
     popupTemplate: popupAirportsusa,
     renderer: airportRenderer,
-    definionExpression: "Fac_Type = 'AIRPORT'",
-    labelingInfo: [airportLabels]
+    definitionExpression: "Fac_Type = 'AIRPORT'",
+    labelingInfo: [airportLabels],
   });
   map.add(airportsusaLayer);
+
+  const heliRenderer = {
+    type: "simple",
+    symbol: {
+      type: "picture-marker",
+      url: "helicopter_FILL0_wght400_GRAD0_opsz24.png",
+      width: "18px",
+      height: "18px",
+    },
+  };
+
+  const heliLayer = new FeatureLayer({
+    url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports_JS_STACK_READ/FeatureServer",
+    outFields: ["Fac_Name", "City", "State_Name"],
+    popupTemplate: popupAirportsusa,
+    renderer: heliRenderer,
+    definitionExpression: "Fac_Type = 'HELIPORT'",
+    labelingInfo: [airportLabels],
+  });
+
+  map.add(heliLayer);
 
   const popupEduusa = {
     title: "EDUs",
